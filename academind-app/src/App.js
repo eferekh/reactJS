@@ -12,7 +12,11 @@ class App extends Component {
     };
 
     switchNameHandler = () => {
+        // let personsArr = this.state.persons.slice();
+        let personsArr = [...this.state.persons];
+        personsArr[0].name = "Ferekh";
 
+        this.setState({ persons: personsArr });
     };
 
     render() { 
