@@ -39,7 +39,7 @@ class App extends Component {
 
     // ## ## ## ## ## //
     resetUserData = () => {
-        let userData = {
+        const userData = {
             userFormUserid: "-1",
             userFormName: "",
             userFormEmail: "",
@@ -112,21 +112,21 @@ class App extends Component {
         );
         formData.append("userFormRole", this.state.userData.userFormRole);
 
-        let res = await axios({
+        const res = await axios({
             method: "POST",
             url: "http://localhost/reactphp-app-backend/Home/reactAddEditUser",
             data: formData
         });
 
-        let data = res.data;
-        let flag = data[0];
+        const data = res.data;
+        const flag = data[0];
 
         if (flag === 1) {
             this.resetUserData();
             this.setState({ userFormShowHideStatus: "none" });
             this.fetchUsers();
         } else {
-            let msg = data[1];
+            const msg = data[1];
             alert(msg);
         }
     };
@@ -136,22 +136,22 @@ class App extends Component {
         let formData = new FormData();
         formData.append("userId", userId);
 
-        let res = await axios({
+        const res = await axios({
             method: "POST",
             url: `http://localhost/reactphp-app-backend/Home/reactGetUserData`,
             data: formData
         });
 
-        let data = res.data;
-        let flag = data[0];
+        const data = res.data;
+        const flag = data[0];
 
         if (flag === 1) {
-            let userData = data[1][0];
-            let userName = `${userData.fname} ${userData.lname}`;
-            let userEmail = userData.email;
-            let userPhonenumber = userData.phone_number;
-            let userCity = userData.city;
-            let userRole = userData.role;
+            const userData = data[1][0];
+            const userName = `${userData.fname} ${userData.lname}`;
+            const userEmail = userData.email;
+            const userPhonenumber = userData.phone_number;
+            const userCity = userData.city;
+            const userRole = userData.role;
 
             this.setUserFormUserid(userId);
             this.setUserFormName(userName);
@@ -162,7 +162,7 @@ class App extends Component {
 
             this.setState({ userFormShowHideStatus: "block" });
         } else {
-            let msg = data[1];
+            const msg = data[1];
             alert(msg);
         }
     };
@@ -182,19 +182,19 @@ class App extends Component {
         let formData = new FormData();
         formData.append("userId", userId);
 
-        let res = await axios({
+        const res = await axios({
             method: "POST",
             url: `http://localhost/reactphp-app-backend/Home/reactDeleteUser`,
             data: formData
         });
 
-        let data = res.data;
-        let flag = data[0];
+        const data = res.data;
+        const flag = data[0];
 
         if (flag === 1) {
             this.fetchUsers();
         } else {
-            let msg = data[1];
+            const msg = data[1];
             alert(msg);
         }
     };
