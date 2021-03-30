@@ -3,6 +3,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Users from "./components/Users";
 import UserForm from "./components/UserForm";
+import AlertModal from "./components/AlertModal";
 import "./App.css";
 import axios from "axios";
 
@@ -20,6 +21,17 @@ class App extends Component {
         },
 
         userFormShowHideStatus: "none",
+
+        alertModalMessage: "",
+        showAlertModal: false,
+
+        userDeleteModalId: -1,
+        showUserDeleteModal: false,
+    };
+
+    // ## ## ## ## ## //
+    setShowAlertModal = () => {
+        this.setState({ showAlertModal: !this.state.showAlertModal });
     };
 
     // ## ## ## ## ## //
@@ -115,7 +127,7 @@ class App extends Component {
         const res = await axios({
             method: "POST",
             url: "http://localhost/reactphp-app-backend/Home/reactAddEditUser",
-            data: formData
+            data: formData,
         });
 
         const data = res.data;
@@ -127,7 +139,7 @@ class App extends Component {
             this.fetchUsers();
         } else {
             const msg = data[1];
-            alert(msg);
+            this.showAlertModal(msg);
         }
     };
 
@@ -139,7 +151,7 @@ class App extends Component {
         const res = await axios({
             method: "POST",
             url: `http://localhost/reactphp-app-backend/Home/reactGetUserData`,
-            data: formData
+            data: formData,
         });
 
         const data = res.data;
@@ -163,7 +175,7 @@ class App extends Component {
             this.setState({ userFormShowHideStatus: "block" });
         } else {
             const msg = data[1];
-            alert(msg);
+            this.showAlertModal(msg);
         }
     };
 
@@ -185,7 +197,7 @@ class App extends Component {
         const res = await axios({
             method: "POST",
             url: `http://localhost/reactphp-app-backend/Home/reactDeleteUser`,
-            data: formData
+            data: formData,
         });
 
         const data = res.data;
@@ -193,10 +205,27 @@ class App extends Component {
 
         if (flag === 1) {
             this.fetchUsers();
+            this.setShowUserDeleteModal(-1);
         } else {
             const msg = data[1];
             alert(msg);
         }
+    };
+
+    // ## ## ## ## ## //
+    setShowUserDeleteModal = (userId) => {
+        this.setState({
+            userDeleteModalId: userId,
+            showUserDeleteModal: !this.state.showUserDeleteModal,
+        });
+    };
+
+    // ## ## ## ## ## //
+    showAlertModal = (msg) => {
+        this.setState({
+            alertModalMessage: msg,
+            showAlertModal: true,
+        });
     };
 
     // ## ## ## ## ## //
@@ -225,14 +254,24 @@ class App extends Component {
                         changeUserFormShowHideStatus={
                             this.changeUserFormShowHideStatus
                         }
+                        alert={this.showAlertModal}
                     />
                     <Users
                         users={this.state.users}
+                        showUserDeleteModal={this.state.showUserDeleteModal}
+                        userDeleteModalId={this.state.userDeleteModalId}
+
                         getUserData={this.getUserData}
                         deleteUser={this.deleteUser}
+                        setShowUserDeleteModal={this.setShowUserDeleteModal}
                     />
                 </div>
 
+                <AlertModal
+                    message={this.state.alertModalMessage}
+                    showAlertModal={this.state.showAlertModal}
+                    setShowAlertModal={this.setShowAlertModal}
+                />
                 <Footer />
             </>
         );

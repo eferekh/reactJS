@@ -22,7 +22,7 @@ class UserTableRow extends Component {
                     </button>
                     <button
                         className="btn btn-danger btn-sm ml-2"
-                        onClick={() => this.props.deleteUser(id)}
+                        onClick={() => this.props.setShowUserDeleteModal(id)}
                     >
                         Delete
                     </button>

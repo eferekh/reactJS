@@ -13,12 +13,12 @@ class UserForm extends Component {
         e.preventDefault();
 
         if (this.props.userData.userFormName === "") {
-            alert("Name Is Required.");
+            this.props.alert("Name Is Required.");
             return;
         }
 
-        if (this.props.userData.userFormUsername === "") {
-            alert("Username Is Required.");
+        if (this.props.userData.userFormEmail === "") {
+            this.props.alert("Email Is Required.");
             return;
         }
 
@@ -26,7 +26,7 @@ class UserForm extends Component {
             this.props.userData.userFormRole === -1 ||
             this.props.userData.userFormRole === "-1"
         ) {
-            alert("Role Is Required");
+            this.props.alert("Role Is Required");
             return;
         }
 
