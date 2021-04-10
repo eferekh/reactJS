@@ -21,12 +21,12 @@ const Pagination = (props) => {
                                 : "page-item"
                         }
                     >
-                        <a
+                        <button
                             onClick={() => onPageChange(page)}
                             className="page-link"
                         >
                             {page}
-                        </a>
+                        </button>
                     </li>
                 ))}
             </ul>
