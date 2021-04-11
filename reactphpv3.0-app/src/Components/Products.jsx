@@ -10,6 +10,14 @@ import DeleteModal from "./modals/DeleteModal";
 class Products extends Component {
     state = {
         products: [],
+
+        product: {
+            id: -1,
+            name: "",
+            price: 0,
+            categoryId: -1,
+        },
+
         showProductsForm: false,
 
         deleteModalId: "-1",
@@ -20,6 +28,13 @@ class Products extends Component {
 
     componentDidMount = () => {
         this.getProducts();
+    };
+
+    handleInputChange = (e) => {
+        const product = { ...this.state.product };
+        product[e.currentTarget.name] = e.currentTarget.value;
+
+        this.setState({ product });
     };
 
     getProducts = async () => {
@@ -40,14 +55,39 @@ class Products extends Component {
         }
     };
 
-    handleShowForm = () => {
-        const showProductsForm = !this.state.showProductsForm;
+    handleShowForm = (bool) => {
+        let showProductsForm;
+
+        if (bool) {
+            showProductsForm = true;
+        } else {
+            this.resetForm();
+            showProductsForm = !this.state.showProductsForm;
+        }
+
         this.setState({ showProductsForm });
     };
 
-    handleSubmit = async (formData, productId) => {
+    resetForm = () => {
+        const product = {
+            id: -1,
+            name: "",
+            price: 0,
+            categoryId: -1,
+        };
+
+        this.setState({ product });
+    };
+
+    handleSubmit = async () => {
+        const formData = new FormData();
+        formData.append("productId", this.state.product.id);
+        formData.append("productName", this.state.product.name);
+        formData.append("productPrice", this.state.product.price);
+        formData.append("productCategoryId", this.state.product.categoryId);
+
         let url = "http://localhost/reactphpv3.0-app-backend/index.php/home/";
-        url += productId === -1 ? "saveNewProduct" : "editProduct";
+        url += this.state.product.id === -1 ? "saveNewProduct" : "editProduct";
 
         const httpReq = await axios({
             url: url,
@@ -67,11 +107,66 @@ class Products extends Component {
         }
     };
 
-    onDelete = (type, id) => {
-        const deleteModalId = id;
+    editProduct = async (productId) => {
+        const formData = new FormData();
+        formData.append("productId", productId);
+        formData.append("productName", this.state.product.name);
+        formData.append("productPrice", this.state.product.price);
+        formData.append("productCategoryId", this.state.product.categoryId);
+
+        const httpReq = await axios({
+            url: `http://localhost/reactphpv3.0-app-backend/index.php/home/editProduct`,
+            method: "POST",
+            data: formData,
+        });
+        const data = httpReq.data;
+        const flag = data[0];
+
+        if (flag === -1) {
+            const errorMsg = data[0];
+            this.props.alert(errorMsg);
+        } else {
+            this.getProducts();
+            this.handleShowForm();
+        }
+    };
+
+    onEdit = async (productId) => {
+        const formData = new FormData();
+        formData.append("productId", productId);
+
+        const httpReq = await axios({
+            url: `http://localhost/reactphpv3.0-app-backend/index.php/home/getProduct`,
+            method: "POST",
+            data: formData,
+        });
+        const data = httpReq.data;
+        const flag = data[0];
+
+        if (flag === 0 || flag === -1) {
+            const errorMsg = data[1];
+            this.props.alert(errorMsg);
+        } else {
+            const productObj = data[1][0];
+
+            const product = {
+                id: productId,
+                name: productObj.product_name,
+                price: productObj.product_price,
+                categoryId: productObj.product_category_id,
+            };
+
+            this.setState({ product });
+            this.handleShowForm(true);
+        }
+    };
+
+    onDelete = (productType, productId) => {
+        const deleteModalId = productId;
         const deleteModalShow = true;
-        const deleteModalType = type;
-        const deleteModalMessage = "Are you sure you want to delete this product ?";
+        const deleteModalType = productType;
+        const deleteModalMessage =
+            "Are you sure you want to delete this product ?";
 
         this.setState({
             deleteModalId,
@@ -100,6 +195,7 @@ class Products extends Component {
     render() {
         const {
             products,
+            product,
             showProductsForm,
             deleteModalId,
             deleteModalShow,
@@ -116,20 +212,23 @@ class Products extends Component {
                         <button
                             type="button"
                             className="btn btn-sm btn-secondary"
-                            onClick={this.handleShowForm}
+                            onClick={() => this.handleShowForm(false)}
                         >
                             Show Form
                         </button>
                     </div>
 
                     <ProductsForm
-                        onSubmit={this.handleSubmit}
+                        product={product}
                         show={showProductsForm}
                         alert={this.props.alert}
+                        onSubmit={this.handleSubmit}
+                        onHandle={this.handleInputChange}
                     />
                     <ProductsTable
                         products={products}
                         onDelete={this.onDelete}
+                        onEdit={this.onEdit}
                     />
                 </div>
 

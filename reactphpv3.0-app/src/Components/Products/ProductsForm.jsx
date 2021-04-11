@@ -5,12 +5,6 @@ import axios from "axios";
 class ProductsForm extends Component {
     state = {
         categories: [],
-        product: {
-            id: -1,
-            name: "",
-            price: 0,
-            categoryId: -1,
-        },
     };
 
     componentDidMount = () => {
@@ -35,24 +29,12 @@ class ProductsForm extends Component {
         }
     };
 
-    formSubmit = (e) => {
+    validateProductForm = (e) => {
         e.preventDefault();
-        const isFormValid = this.validateProductForm();
-        if (!isFormValid) return false;
-
-        const formData = new FormData();
-        formData.append("productId", this.state.product.id);
-        formData.append("productName", this.state.product.name);
-        formData.append("productPrice", this.state.product.price);
-        formData.append("productCategoryId", this.state.product.categoryId);
-
-        this.props.onSubmit(formData, this.state.product.id);
-    };
-
-    validateProductForm = () => {
-        const productName = this.state.product.name;
-        const productPrice = this.state.product.price;
-        const productCategoryId = Number(this.state.product.categoryId);
+        
+        const productName = this.props.product.name;
+        const productPrice = this.props.product.price;
+        const productCategoryId = Number(this.props.product.categoryId);
 
         if (productName.trim() === "") {
             const msg = "Product Name Is Required.";
@@ -78,14 +60,7 @@ class ProductsForm extends Component {
             return false;
         }
 
-        return true;
-    };
-
-    handleInputChange = (e) => {
-        const product = { ...this.state.product };
-        product[e.currentTarget.name] = e.currentTarget.value;
-
-        this.setState({ product });
+        this.props.onSubmit();
     };
 
     createFormClass = () => {
@@ -93,10 +68,11 @@ class ProductsForm extends Component {
     };
 
     render() {
-        const { product, categories } = this.state;
+        const { categories } = this.state;
+        const { onHandle, onSubmit, product } = this.props;
 
         return (
-            <form onSubmit={this.formSubmit} className={this.createFormClass()}>
+            <form onSubmit={this.validateProductForm} className={this.createFormClass()}>
                 <input type="hidden" value={product.id} />
 
                 <div className="row">
@@ -105,7 +81,7 @@ class ProductsForm extends Component {
                             <label htmlFor="productName">Product Name</label>
                             <input
                                 value={product.name}
-                                onChange={this.handleInputChange}
+                                onChange={onHandle}
                                 type="text"
                                 id="productName"
                                 name="name"
@@ -119,7 +95,7 @@ class ProductsForm extends Component {
                             <label htmlFor="productPrice">Product Price</label>
                             <input
                                 value={product.price}
-                                onChange={this.handleInputChange}
+                                onChange={onHandle}
                                 type="text"
                                 id="productPrice"
                                 name="price"
@@ -140,7 +116,7 @@ class ProductsForm extends Component {
                                 id="productCategory"
                                 name="categoryId"
                                 value={product.categoryId}
-                                onChange={this.handleInputChange}
+                                onChange={onHandle}
                             >
                                 <option value="-1">-- Select --</option>
                                 {categories.map((category) => (

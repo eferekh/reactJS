@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 const ProductsTable = (props) => {
-    const { products, onDelete } = props;
+    const { products, onDelete, onEdit } = props;
 
     return (
         <table className="table table-sm productsTable">
@@ -23,11 +23,11 @@ const ProductsTable = (props) => {
                         <td className="text-center">${product.product_price}</td>
                         <td>{product.category_name}</td>
                         <td className="text-center">
-                            <button className="btn btn-sm btn-primary">
+                            <button onClick={() => onEdit(product.id)} className="btn btn-sm btn-primary">
                                 Edit
                             </button>
 
-                            <button className="btn btn-sm btn-danger ml-2" onClick={() => onDelete("product", product.id)}>
+                            <button onClick={() => onDelete("product", product.id)} className="btn btn-sm btn-danger ml-2">
                                 Delete
                             </button>
                         </td>
@@ -41,6 +41,7 @@ const ProductsTable = (props) => {
 ProductsTable.propTypes = {
     products: PropTypes.array,
     onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
 };
 
 export default ProductsTable;

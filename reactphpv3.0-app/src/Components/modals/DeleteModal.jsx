@@ -34,7 +34,7 @@ class DeleteModal extends Component {
 
         return (
             <Modal
-                size="lg"
+                size="md"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 show={show}
