@@ -1,8 +1,5 @@
-import { PropTypes } from "prop-types";
-import { Modal, Button } from "react-bootstrap";
-
-const AlertModal = (props) => {
-    const { show, message, onHide } = props;
+const DeleteModal = (props) => {
+    const { show, message, type, id, onHide } = props;
 
     return (
         <Modal
@@ -22,22 +19,23 @@ const AlertModal = (props) => {
                 <p>{message}</p>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => onHide("")}>Close</Button>
+                <Button onClick={() => onDelete(type, id)}>Yes</Button>
+                <Button onClick={() => onHide("")}>No</Button>
             </Modal.Footer>
         </Modal>
     );
 };
 
-AlertModal.propTypes = {
+DeleteModal.propTypes = {
     show: PropTypes.bool,
     message: PropTypes.string,
     onHide: PropTypes.func,
 };
 
-AlertModal.defaultProps = {
+DeleteModal.defaultProps = {
     show: false,
     message: "",
     onHide: () => console.log("On Hide Function Not Defined In Alert Modal."),
 };
 
-export default AlertModal;
+export default DeleteModal;
