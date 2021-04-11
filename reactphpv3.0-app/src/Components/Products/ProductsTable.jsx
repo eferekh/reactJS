@@ -27,7 +27,7 @@ const ProductsTable = (props) => {
                                 Edit
                             </button>
 
-                            <button className="btn btn-sm btn-danger ml-2" onClick={() => onDelete(product.id)}>
+                            <button className="btn btn-sm btn-danger ml-2" onClick={() => onDelete("product", product.id)}>
                                 Delete
                             </button>
                         </td>

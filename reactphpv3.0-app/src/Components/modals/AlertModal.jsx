@@ -14,7 +14,7 @@ const AlertModal = (props) => {
             animation={true}
         >
             <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter text-danger">
+                <Modal.Title id="contained-modal-title-vcenter" className="text-danger">
                     Alert
                 </Modal.Title>
             </Modal.Header>

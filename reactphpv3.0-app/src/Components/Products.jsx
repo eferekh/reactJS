@@ -5,13 +5,17 @@ import Header from "./common/Header";
 import Footer from "./common/Footer";
 import ProductsTable from "./Products/ProductsTable";
 import ProductsForm from "./Products/ProductsForm";
+import DeleteModal from "./modals/DeleteModal";
 
 class Products extends Component {
     state = {
         products: [],
         showProductsForm: false,
+
+        deleteModalId: "-1",
         deleteModalShow: false,
-        deleteModalProductId: -1,
+        deleteModalMessage: "",
+        deleteModalType: "",
     };
 
     componentDidMount = () => {
@@ -63,17 +67,44 @@ class Products extends Component {
         }
     };
 
-    showDeleteModal = (productId) => {
-        const deleteModalShow = !this.state.deleteModalShow;
-        this.setState({ deleteModalShow });
+    onDelete = (type, id) => {
+        const deleteModalId = id;
+        const deleteModalShow = true;
+        const deleteModalType = type;
+        const deleteModalMessage = "Are you sure you want to delete this product ?";
+
+        this.setState({
+            deleteModalId,
+            deleteModalShow,
+            deleteModalType,
+            deleteModalMessage,
+        });
+    };
+
+    deleteModalOnHide = () => {
+        const deleteModalId = "-1";
+        const deleteModalShow = false;
+        const deleteModalType = "";
+        const deleteModalMessage = "";
+
+        this.setState({
+            deleteModalId,
+            deleteModalShow,
+            deleteModalType,
+            deleteModalMessage,
+        });
+
+        this.getProducts();
     };
 
     render() {
         const {
             products,
             showProductsForm,
+            deleteModalId,
             deleteModalShow,
-            deleteModalProductId,
+            deleteModalType,
+            deleteModalMessage,
         } = this.state;
 
         return (
@@ -98,14 +129,17 @@ class Products extends Component {
                     />
                     <ProductsTable
                         products={products}
-                        onDelete={this.showDeleteModal}
+                        onDelete={this.onDelete}
                     />
                 </div>
 
-                <ProductDeleteModal
-                    productId={deleteModalProductId}
+                <DeleteModal
                     show={deleteModalShow}
-                    onHide={this.showDeleteModal}
+                    id={deleteModalId}
+                    message={deleteModalMessage}
+                    type={deleteModalType}
+                    onHide={this.deleteModalOnHide}
+                    alert={this.props.alert}
                 />
 
                 <Footer />

@@ -6,7 +6,6 @@ import Users from "./Components/Users";
 import Customers from "./Components/Customers";
 import NotFound from "./Components/NotFound";
 import AlertModal from "./Components/modals/AlertModal";
-import DeleteModal from "./Components/modals/DeleteModal";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 
@@ -14,11 +13,6 @@ class App extends Component {
     state = {
         alertModalShow: false,
         alertModalMessage: "",
-
-        deleteModalId: -1,
-        deleteModalShow: false,
-        deleteModalType: "",
-        deleteModalMessage: "",
     };
 
     alertModalHandleHide = (msg) => {
@@ -29,7 +23,10 @@ class App extends Component {
     };
 
     render() {
-        const { alertModalShow, alertModalMessage };
+        const {
+            alertModalShow,
+            alertModalMessage,
+        } = this.state;
 
         return (
             <>
@@ -43,7 +40,10 @@ class App extends Component {
                     <Route
                         path="/products"
                         render={() => (
-                            <Products alert={this.alertModalHandleHide} />
+                            <Products
+                                alert={this.alertModalHandleHide}
+                                onDelete={this.showDeleteModal}
+                            />
                         )}
                     />
                     <Route
@@ -74,14 +74,6 @@ class App extends Component {
                     show={alertModalShow}
                     message={alertModalMessage}
                     onHide={this.alertModalHandleHide}
-                />
-
-                <DeleteModal
-                    type={deleteModalType}
-                    id={deleteModalId}
-                    show={deleteModalShow}
-                    message={deleteModalMessage}
-                    onHide={this.deleteModalHandleHide}
                 />
             </>
         );
