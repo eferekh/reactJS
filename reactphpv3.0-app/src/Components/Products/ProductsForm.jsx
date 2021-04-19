@@ -69,76 +69,87 @@ class ProductsForm extends Component {
 
     render() {
         const { categories } = this.state;
-        const { onHandle, onSubmit, product } = this.props;
+        const { onHandle, product, show, onToggle } = this.props;
 
         return (
-            <form onSubmit={this.validateProductForm} className={this.createFormClass()}>
-                <input type="hidden" value={product.id} />
-
-                <div className="row">
-                    <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <div className="form-group">
-                            <label htmlFor="productName">Product Name</label>
-                            <input
-                                value={product.name}
-                                onChange={onHandle}
-                                type="text"
-                                id="productName"
-                                name="name"
-                                className="form-control"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <div className="form-group">
-                            <label htmlFor="productPrice">Product Price</label>
-                            <input
-                                value={product.price}
-                                onChange={onHandle}
-                                type="text"
-                                id="productPrice"
-                                name="price"
-                                className="form-control"
-                            />
-                        </div>
-                    </div>
+            <>
+                <div className="topButtonContainer">
+                    <button
+                        type="button"
+                        className="btn btn-sm btn-secondary"
+                        onClick={() => onToggle(false)}
+                    >
+                        {show ? "Hide" : "Show"} Form
+                    </button>
                 </div>
+                <form onSubmit={this.validateProductForm} className={this.createFormClass()}>
+                    <input type="hidden" value={product.id} />
 
-                <div className="row">
-                    <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <div className="form-group">
-                            <label htmlFor="productCategory">
-                                Product Category
-                            </label>
-                            <select
-                                className="form-control"
-                                id="productCategory"
-                                name="categoryId"
-                                value={product.categoryId}
-                                onChange={onHandle}
-                            >
-                                <option value="-1">-- Select --</option>
-                                {categories.map((category) => (
-                                    <option
-                                        value={category.id}
-                                        key={category.id}
-                                    >
-                                        {category.category_name}
-                                    </option>
-                                ))}
-                            </select>
+                    <div className="row">
+                        <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div className="form-group">
+                                <label htmlFor="productName">Product Name</label>
+                                <input
+                                    value={product.name}
+                                    onChange={onHandle}
+                                    type="text"
+                                    id="productName"
+                                    name="name"
+                                    className="form-control"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <div className="form-group">
+                                <label htmlFor="productPrice">Product Price</label>
+                                <input
+                                    value={product.price}
+                                    onChange={onHandle}
+                                    type="text"
+                                    id="productPrice"
+                                    name="price"
+                                    className="form-control"
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <button
-                    type="submit"
-                    className="btn btn-block btn-outline-primary"
-                >
-                    Submit
-                </button>
-            </form>
+                    <div className="row">
+                        <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                            <div className="form-group">
+                                <label htmlFor="productCategory">
+                                    Product Category
+                                </label>
+                                <select
+                                    className="form-control"
+                                    id="productCategory"
+                                    name="categoryId"
+                                    value={product.categoryId}
+                                    onChange={onHandle}
+                                >
+                                    <option value="-1">-- Select --</option>
+                                    {categories.map((category) => (
+                                        <option
+                                            value={category.id}
+                                            key={category.id}
+                                        >
+                                            {category.category_name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="btn btn-block btn-outline-primary"
+                    >
+                        Submit
+                    </button>
+                </form>
+            </>
         );
     }
 }

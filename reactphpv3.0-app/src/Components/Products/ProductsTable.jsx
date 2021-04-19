@@ -20,14 +20,21 @@ const ProductsTable = (props) => {
                     <tr key={product.id}>
                         <td className="text-center">{product.id}</td>
                         <td>{product.product_name}</td>
-                        <td className="text-center">${product.product_price}</td>
+                        <td className="text-center">
+                            ${product.product_price}
+                        </td>
                         <td>{product.category_name}</td>
                         <td className="text-center">
-                            <button onClick={() => onEdit(product.id)} className="btn btn-sm btn-primary">
+                            <button
+                                onClick={() => onEdit(product.id)}
+                                className="btn btn-sm btn-primary"
+                            >
                                 Edit
                             </button>
-
-                            <button onClick={() => onDelete("product", product.id)} className="btn btn-sm btn-danger ml-2">
+                            <button
+                                onClick={() => onDelete("product", product.id)}
+                                className="btn btn-sm btn-danger ml-2"
+                            >
                                 Delete
                             </button>
                         </td>

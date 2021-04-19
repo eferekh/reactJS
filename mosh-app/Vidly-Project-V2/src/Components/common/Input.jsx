@@ -1,14 +1,12 @@
-const Input = ({ name, label, value, error, onChange }) => {
+const Input = ({ name, label, error, ...rest }) => {
     return (
         <div className="form-group">
             <label htmlFor={name}>{label}</label>
             <input
-                type="text"
-                value={value}
-                onChange={onChange}
-                className="form-control"
+                {...rest}
                 id={name}
                 name={name}
+                className="form-control"
                 // autoFocus
                 // ref={props.username}
             />

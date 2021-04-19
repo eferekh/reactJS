@@ -1,5 +1,7 @@
+import PropTypes from "prop-types";
+
 const CategoriesTable = (props) => {
-    const { categories } = props;
+    const { categories, onDelete, onEdit } = props;
 
     return (
         <table className="table table-sm">
@@ -17,11 +19,19 @@ const CategoriesTable = (props) => {
                         <td className="text-center">{category.id}</td>
                         <td>{category.category_name}</td>
                         <td className="text-center">
-                            <button className="btn btn-sm btn-primary">
+                            <button
+                                onClick={() => onEdit(category.id)}
+                                className="btn btn-sm btn-primary"
+                            >
                                 Edit
                             </button>
 
-                            <button className="btn btn-sm btn-danger ml-2">
+                            <button
+                                onClick={() =>
+                                    onDelete("category", category.id)
+                                }
+                                className="btn btn-sm btn-danger ml-2"
+                            >
                                 Delete
                             </button>
                         </td>
@@ -30,6 +40,12 @@ const CategoriesTable = (props) => {
             </tbody>
         </table>
     );
-}
- 
+};
+
+CategoriesTable.propTypes = {
+    categories: PropTypes.array,
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+};
+
 export default CategoriesTable;

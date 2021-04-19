@@ -3,12 +3,11 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./common/Input";
+import Form from "./common/Form";
 
-class LoginForm extends Component {
-    // username = React.createRef();
-
+class LoginForm extends Form {
     state = {
-        account: {
+        data: {
             username: "",
             password: "",
         },
@@ -27,34 +26,41 @@ class LoginForm extends Component {
         // this.username.current.focus();
     };
 
-    validate = () => {
-        // If abortEarly property is true, Joi will return the first validation error found and ignore the rest
-        const options = { abortEarly: false };
-        const { error } = Joi.validate(
-            this.state.account,
-            this.schema,
-            options
-        );
-
-        if (!error) return null;
-
-        const errors = {};
-        for (let item of error.details) {
-            errors[item.path[0]] = item.message;
-        }
-        return errors;
+    doSubmit = () => {
+        // Call The Server
+        console.log("Submitted");
     };
+
+    render() {
+        return (
+            <div>
+                <h1>Login</h1>
+                <form onSubmit={this.handleSubmit}>
+                    {this.renderInput("username", "Username")}
+                    {this.renderInput("password", "Password", "password")}
+                    {this.renderButton("Login")}
+                </form>
+            </div>
+        );
+    };
+
+    // username = React.createRef();
+    // -- Accessing the DOM in Vanilla Javascript
+    // const username = document.querySelector("#username").value;
+    // -- Accessing the DOM in React
+    // const username = this.username.current.value;
+
 
     // validate = () => {
     //     // Basic Validation
     //     const errors = {};
-    //     const { account } = this.state;
+    //     const { data } = this.state;
 
-    //     if (account.username.trim() === "") {
+    //     if (data.username.trim() === "") {
     //         errors.username = "Username is required.";
     //     }
 
-    //     if (account.password.trim() === "") {
+    //     if (data.password.trim() === "") {
     //         errors.password = "Password is required.";
     //     }
 
@@ -63,26 +69,6 @@ class LoginForm extends Component {
     //     // in this case ["username", "password"]
     // };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-
-        const errors = this.validate();
-        this.setState({ errors: errors ? errors : {} });
-        if (errors) return;
-
-        // -- Accessing the DOM in Vanilla Javascript
-        // const username = document.querySelector("#username").value;
-        // -- Accessing the DOM in React
-        // const username = this.username.current.value;
-    };
-
-    validateProperty = ({ name, value }) => {
-        const obj = { [name]: value };
-        const schema = { [name]: this.schema[name] };
-
-        const { error } = Joi.validate(obj, schema);
-        return error ? error.details[0].message : null;
-    };
 
     // validateProperty = ({ name, value }) => {
     //     if (name === "username") {
@@ -96,48 +82,6 @@ class LoginForm extends Component {
     //     }
     // };
 
-    handleChange = ({ currentTarget: input }) => {
-        const errors = { ...this.state.errors };
-        const errorMessage = this.validateProperty(input);
-        if (errorMessage) errors[input.name] = errorMessage;
-        else delete errors[input.name];
-
-        const account = { ...this.state.account };
-        account[input.name] = input.value;
-
-        this.setState({ account, errors });
-    };
-
-    render() {
-        const { account, errors } = this.state;
-
-        return (
-            <div>
-                <h1>Login</h1>
-                <form onSubmit={this.handleSubmit}>
-                    <Input
-                        name="username"
-                        value={account.username}
-                        label="Username"
-                        onChange={this.handleChange}
-                        error={errors.username}
-                    />
-
-                    <Input
-                        name="password"
-                        value={account.password}
-                        label="Password"
-                        onChange={this.handleChange}
-                        error={errors.password}
-                    />
-
-                    <button type="submit" className="btn btn-primary" disabled={this.validate()}>
-                        Login
-                    </button>
-                </form>
-            </div>
-        );
-    }
 }
 
 export default LoginForm;

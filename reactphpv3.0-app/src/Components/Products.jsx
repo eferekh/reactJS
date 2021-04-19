@@ -99,8 +99,8 @@ class Products extends Component {
         const flag = data[0];
 
         if (flag === 0 || flag === -1) {
-            const msg = data[1];
-            this.props.alert(msg);
+            const errorMsg = data[1];
+            this.props.alert(errorMsg);
         } else {
             this.getProducts();
             this.handleShowForm();
@@ -208,22 +208,13 @@ class Products extends Component {
                 <Header active="products" />
 
                 <div className="container mt-2 mb-2">
-                    <div className="topButtonContainer">
-                        <button
-                            type="button"
-                            className="btn btn-sm btn-secondary"
-                            onClick={() => this.handleShowForm(false)}
-                        >
-                            Show Form
-                        </button>
-                    </div>
-
                     <ProductsForm
                         product={product}
                         show={showProductsForm}
                         alert={this.props.alert}
                         onSubmit={this.handleSubmit}
                         onHandle={this.handleInputChange}
+                        onToggle={this.handleShowForm}
                     />
                     <ProductsTable
                         products={products}

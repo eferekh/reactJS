@@ -7,6 +7,7 @@ import NotFound from "./Components/NotFound";
 import NavBar from "./Components/Navbar";
 import MovieForm from './Components/MovieForm';
 import LoginForm from './Components/LoginForm';
+import RegisterForm from './Components/RegisterForm';
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
@@ -19,6 +20,7 @@ class App extends Component {
                 <NavBar />
                 <main className="container">
                     <Switch>
+                        <Route path="/register" component={RegisterForm} />
                         <Route path="/login" component={LoginForm} />
                         <Route path="/movies/:id" component={MovieForm} />
                         <Route path="/movies" component={Movies} />

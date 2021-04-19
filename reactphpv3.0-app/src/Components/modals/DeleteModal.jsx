@@ -6,6 +6,28 @@ import PropTypes from "prop-types";
 class DeleteModal extends Component {
     onDelete = (type, id) => {
         if (type === "product") this.deleteProduct(id);
+        if (type === "category") this.deleteCategory(id);
+    };
+
+    deleteCategory = async (categoryId) => {
+        const formData = new FormData();
+        formData.append("categoryId", categoryId);
+
+        const httpReq = await axios({
+            url: `http://localhost/reactphpv3.0-app-backend/index.php/home/deleteCategory`,
+            method: "POST",
+            data: formData, 
+        });
+
+        const data = httpReq.data;
+        const flag = data[0];
+
+        if (flag === -1) {
+            const errorMsg = data[1];
+            this.props.alert(errorMsg);
+        } else {
+            this.props.onHide();
+        }
     };
 
     deleteProduct = async (productId) => {
