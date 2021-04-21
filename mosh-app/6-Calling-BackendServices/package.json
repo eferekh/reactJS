@@ -3,12 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@sentry/react": "^6.3.0",
+    "@sentry/tracing": "^6.3.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.1.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts": "1.1.4",
+<<<<<<< HEAD:mosh-app/6-Calling-BackendServices/package.json
     "react-toastify": "4.1"
+=======
+    "react-toastify": "^4.1.0"
+>>>>>>> 7cce3be8f6cde8fe727de4ffa6af6d9fedabb9a2:mosh-app/6-Calling Backend Services/package.json
   },
   "scripts": {
     "start": "react-scripts start",

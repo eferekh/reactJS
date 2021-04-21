@@ -1,6 +1,12 @@
+// npm install react-toastify@4.1
+// create a user on sentry.io
+// npm install --save @sentry/react @sentry/tracing
+
 import React, { Component } from "react";
+import { ToastContainer } from "react-toastify";
 import http from "./services/httpService";
 import config from "./config.json";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 class App extends Component {
@@ -45,7 +51,7 @@ class App extends Component {
         this.setState({ posts });
 
         try {
-            await http.delete(config.apiEndpoint + "/" + post.id);
+            await http.delete("s" + config.apiEndpoint + "/" + post.id);
 
             // throw new Error("123");
         } catch (exception) {
@@ -59,6 +65,8 @@ class App extends Component {
     render() {
         return (
             <React.Fragment>
+                <ToastContainer />
+                
                 <button className="btn btn-primary" onClick={this.handleAdd}>
                     Add
                 </button>
