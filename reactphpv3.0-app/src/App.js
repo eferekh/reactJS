@@ -42,7 +42,6 @@ class App extends Component {
                         render={() => (
                             <Products
                                 alert={this.alertModalHandleHide}
-                                onDelete={this.showDeleteModal}
                             />
                         )}
                     />
