@@ -7,6 +7,7 @@ class DeleteModal extends Component {
     onDelete = (type, id) => {
         if (type === "product") this.deleteProduct(id);
         if (type === "category") this.deleteCategory(id);
+        if (type === "customer") this.deleteCustomer(id);
     };
 
     deleteCategory = async (categoryId) => {
@@ -38,6 +39,27 @@ class DeleteModal extends Component {
             url: `http://localhost/reactphpv3.0-app-backend/index.php/home/deleteProduct`,
             method: "POST",
             data: formData,
+        });
+
+        const data = httpReq.data;
+        const flag = data[0];
+
+        if (flag === -1) {
+            const errorMsg = data[1];
+            this.props.alert(errorMsg);
+        } else {
+            this.props.onHide();
+        }
+    };
+
+    deleteCustomer = async (customerId) => {
+        const formData = new FormData();
+        formData.append("customerId", customerId);
+
+        const httpReq = await axios({
+            url: `http://localhost/reactphpv3.0-app-backend/index.php/home/deleteCustomer`,
+            method: "POST",
+            data: formData, 
         });
 
         const data = httpReq.data;

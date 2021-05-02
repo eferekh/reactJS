@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import axios from "axios";
 import UsersTable from "./Users/UsersTable";
+import UsersForm from "./Users/UsersForm";
 import Header from "./common/Header";
 import Footer from "./common/Footer";
 
@@ -38,6 +39,8 @@ class Users extends Component {
                 <Header active="users" />
 
                     <div className="container mt-2 mb-2">
+                        <UsersForm />
+
                         <UsersTable users={this.state.users} />
                     </div>
 

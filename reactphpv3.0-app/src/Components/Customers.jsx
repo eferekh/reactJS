@@ -83,7 +83,7 @@ class Customers extends Component {
             customerId: "-1",
             customerName: "",
             customerEmail: "",
-            customerMobileNumber: ""
+            customerMobileNumber: "",
         };
 
         this.setState({ customer });
@@ -123,6 +123,63 @@ class Customers extends Component {
         }
     };
 
+    onDelete = (customerType, customerId) => {
+        const deleteModalId = customerId;
+        const deleteModalShow = true;
+        const deleteModalType = customerType;
+        const deleteModalMessage =
+            "Are you sure you want to delete this customer ?";
+
+        this.setState({
+            deleteModalId,
+            deleteModalShow,
+            deleteModalType,
+            deleteModalMessage,
+        });
+    };
+
+    onEdit = async (customerId) => {
+        const formData = new FormData();
+        formData.append("customerId", customerId);
+
+        const httpReq = await axios({
+            url: `http://localhost/reactphpv3.0-app-backend/index.php/home/getCustomer`,
+            method: "POST",
+            data: formData,
+        });
+        const data = httpReq.data;
+        const flag = data[0];
+
+        if (flag === 0 || flag === -1) {
+            const errorMsg = data[1];
+            this.props.alert(errorMsg);
+        } else {
+            const customerObj = data[1][0];
+
+            const customer = {
+                customerId: customerId,
+                customerName: customerObj.customer_name,
+                customerEmail: customerObj.customer_email,
+                customerMobileNumber: customerObj.customer_mobile_number,
+            };
+
+            this.setState({ customer });
+            this.handleShowForm(true);
+        }
+    };
+
+    handleShowForm = (bool) => {
+        let showCustomersForm;
+
+        if (bool) showCustomersForm = true;
+        else {
+            this.resetCustomerForm();
+            showCustomersForm = !this.state.showCustomersForm;
+        }
+
+        this.setState({ showCustomersForm });
+    };
+
     componentDidMount = () => {
         this.getCustomers();
     };
@@ -152,7 +209,11 @@ class Customers extends Component {
                         onSubmit={this.handleSubmit}
                     />
 
-                    <CustomersTable customers={customers} />
+                    <CustomersTable
+                        customers={customers}
+                        onDelete={this.onDelete}
+                        onEdit={this.onEdit}
+                    />
                 </div>
 
                 <DeleteModal

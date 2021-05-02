@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 
 const CustomersTable = (props) => {
-    const { customers } = props;
-    
+    const { customers, onDelete, onEdit } = props;
+
     return (
         <table className="table table-sm">
             <thead className="thead-dark">
@@ -16,18 +16,28 @@ const CustomersTable = (props) => {
             </thead>
 
             <tbody>
-                {customers.map(customer => (
+                {customers.map((customer) => (
                     <tr key={customer.id}>
                         <td className="text-center">{customer.id}</td>
                         <td>{customer.customer_name}</td>
                         <td>{customer.customer_email}</td>
-                        <td className="text-center">{customer.customer_mobile_number}</td>
                         <td className="text-center">
-                            <button className="btn btn-sm btn-primary">
+                            {customer.customer_mobile_number}
+                        </td>
+                        <td className="text-center">
+                            <button
+                                onClick={() => onEdit(customer.id)}
+                                className="btn btn-sm btn-primary"
+                            >
                                 Edit
                             </button>
 
-                            <button className="btn btn-sm btn-danger ml-2">
+                            <button
+                                onClick={() =>
+                                    onDelete("customer", customer.id)
+                                }
+                                className="btn btn-sm btn-danger ml-2"
+                            >
                                 Delete
                             </button>
                         </td>
@@ -36,10 +46,10 @@ const CustomersTable = (props) => {
             </tbody>
         </table>
     );
-}
+};
 
 CustomersTable.propTypes = {
     customers: PropTypes.array,
 };
- 
+
 export default CustomersTable;

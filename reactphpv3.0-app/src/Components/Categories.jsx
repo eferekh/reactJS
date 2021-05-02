@@ -152,10 +152,10 @@ class Categories extends Component {
         }
     };
 
-    onDelete = (productType, productId) => {
-        const deleteModalId = productId;
+    onDelete = (categoryType, categoryId) => {
+        const deleteModalId = categoryId;
         const deleteModalShow = true;
-        const deleteModalType = productType;
+        const deleteModalType = categoryType;
         const deleteModalMessage =
             "Are you sure you want to delete this category ?";
 
